@@ -49,7 +49,7 @@ Antes de começar, garanta que você tenha instalado em sua máquina:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/seu-usuario/EventSync-API.git](https://github.com/seu-usuario/EventSync-API.git)
+    git clone https://github.com/barbaraguarino/EventSync-API.git
     cd EventSync-API
     ```
 
