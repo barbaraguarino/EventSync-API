@@ -111,3 +111,16 @@ Aqui está uma lista dos principais endpoints disponíveis.
 | `DELETE`   | `/events/{id}`              | Deleta um evento.                                   | Protegido | Não Implementado |
 | `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                        | Protegido | Não Implementado |
 | `GET`      | `/me/events`                | Lista os eventos em que o usuário marcou presença.  | Protegido | Não Implementado |
+
+---
+
+## 🏛️ Arquitetura do Projeto
+
+O projeto segue uma arquitetura em camadas, separando as responsabilidades para manter o código organizado, testável e escalável.
+
+* `domain`: Contém as entidades de negócio (`User`, `Event`) e as interfaces dos repositórios. É o coração da aplicação.
+* `application`: Contém a lógica de negócio (casos de uso). Orquestra o fluxo de dados entre a apresentação e o domínio, utilizando DTOs e Mappers.
+* `presentation`: Responsável pela exposição da API (Controladores REST). Lida com as requisições HTTP e respostas, delegando o trabalho para a camada de `application`.
+* `infrastructure`: Implementações de tecnologias externas, como a integração com serviços da AWS (S3) e a implementação da persistência de dados.
+* `config`: Configurações globais da aplicação, como segurança (Spring Security) e beans de integração.
+* `shared`: Componentes reutilizáveis, como manipuladores de exceções globais (`GlobalExceptionHandler`), que servem a toda a aplicação.
