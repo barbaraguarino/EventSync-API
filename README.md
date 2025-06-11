@@ -18,7 +18,7 @@ Esta API é responsável por toda a lógica de negócio e gerenciamento de dados
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 * **Java 17**
 * **Spring Boot 3**
@@ -45,7 +45,7 @@ Antes de começar, garanta que você tenha instalado em sua máquina:
 * [**PostgreSQL**](https://www.postgresql.org/download/)
 * Uma IDE de sua preferência (ex: IntelliJ IDEA, VS Code com Java Extension Pack).
 
-### ⚙️ Configuração
+### Configuração
 
 1.  **Clone o repositório:**
     ```bash
@@ -96,13 +96,26 @@ Antes de começar, garanta que você tenha instalado em sua máquina:
 
 ---
 
+## Arquitetura do Projeto
+
+O projeto segue uma arquitetura em camadas, separando as responsabilidades para manter o código organizado, testável e escalável.
+
+* `domain`: Contém as entidades de negócio (`User`, `Event`) e as interfaces dos repositórios. É o coração da aplicação.
+* `application`: Contém a lógica de negócio (casos de uso). Orquestra o fluxo de dados entre a apresentação e o domínio, utilizando DTOs e Mappers.
+* `presentation`: Responsável pela exposição da API (Controladores REST). Lida com as requisições HTTP e respostas, delegando o trabalho para a camada de `application`.
+* `infrastructure`: Implementações de tecnologias externas, como a integração com serviços da AWS (S3) e a implementação da persistência de dados.
+* `config`: Configurações globais da aplicação, como segurança (Spring Security) e beans de integração.
+* `shared`: Componentes reutilizáveis, como manipuladores de exceções globais (`GlobalExceptionHandler`), que servem a toda a aplicação.
+
+---
+
 ## Endpoints da API
 
 Aqui está uma lista dos principais endpoints disponíveis.
 
 | Verbo HTTP | URI                         | Descrição                                           | Proteção  | Status           |
 |:-----------|:----------------------------|:----------------------------------------------------|:----------|:-----------------|
-| `POST`     | `/auth/register`            | Registra um novo usuário.                           | Público   | Não Implementado |
+| `POST`     | `/auth/register`            | Registra um novo usuário.                           | Público   | Implementado     |
 | `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.        | Público   | Não Implementado |
 | `GET`      | `/events`                   | Lista todos os eventos públicos.                    | Público   | Não Implementado |
 | `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.             | Público   | Não Implementado |
