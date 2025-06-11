@@ -45,7 +45,7 @@ Antes de começar, garanta que você tenha instalado em sua máquina:
 * [**PostgreSQL**](https://www.postgresql.org/download/)
 * Uma IDE de sua preferência (ex: IntelliJ IDEA, VS Code com Java Extension Pack).
 
-### ⚙️ Configuração
+### Configuração
 
 1.  **Clone o repositório:**
     ```bash
@@ -96,24 +96,6 @@ Antes de começar, garanta que você tenha instalado em sua máquina:
 
 ---
 
-## Endpoints da API
-
-Aqui está uma lista dos principais endpoints disponíveis.
-
-| Verbo HTTP | URI                         | Descrição                                           | Proteção  | Status           |
-|:-----------|:----------------------------|:----------------------------------------------------|:----------|:-----------------|
-| `POST`     | `/auth/register`            | Registra um novo usuário.                           | Público   | Não Implementado |
-| `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.        | Público   | Não Implementado |
-| `GET`      | `/events`                   | Lista todos os eventos públicos.                    | Público   | Não Implementado |
-| `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.             | Público   | Não Implementado |
-| `POST`     | `/events`                   | Cria um novo evento.                                | Protegido | Não Implementado |
-| `PUT`      | `/events/{id}`              | Atualiza um evento existente.                       | Protegido | Não Implementado |
-| `DELETE`   | `/events/{id}`              | Deleta um evento.                                   | Protegido | Não Implementado |
-| `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                        | Protegido | Não Implementado |
-| `GET`      | `/me/events`                | Lista os eventos em que o usuário marcou presença.  | Protegido | Não Implementado |
-
----
-
 ## Arquitetura do Projeto
 
 O projeto segue uma arquitetura em camadas, separando as responsabilidades para manter o código organizado, testável e escalável.
@@ -124,3 +106,21 @@ O projeto segue uma arquitetura em camadas, separando as responsabilidades para 
 * `infrastructure`: Implementações de tecnologias externas, como a integração com serviços da AWS (S3) e a implementação da persistência de dados.
 * `config`: Configurações globais da aplicação, como segurança (Spring Security) e beans de integração.
 * `shared`: Componentes reutilizáveis, como manipuladores de exceções globais (`GlobalExceptionHandler`), que servem a toda a aplicação.
+
+---
+
+## Endpoints da API
+
+Aqui está uma lista dos principais endpoints disponíveis.
+
+| Verbo HTTP | URI                         | Descrição                                           | Proteção  | Status             |
+|:-----------|:----------------------------|:----------------------------------------------------|:----------|:-------------------|
+| `POST`     | `/auth/register`            | Registra um novo usuário.                           | Público   | Em Desenvolvimento |
+| `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.        | Público   | Não Implementado   |
+| `GET`      | `/events`                   | Lista todos os eventos públicos.                    | Público   | Não Implementado   |
+| `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.             | Público   | Não Implementado   |
+| `POST`     | `/events`                   | Cria um novo evento.                                | Protegido | Não Implementado   |
+| `PUT`      | `/events/{id}`              | Atualiza um evento existente.                       | Protegido | Não Implementado   |
+| `DELETE`   | `/events/{id}`              | Deleta um evento.                                   | Protegido | Não Implementado   |
+| `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                        | Protegido | Não Implementado   |
+| `GET`      | `/me/events`                | Lista os eventos em que o usuário marcou presença.  | Protegido | Não Implementado   |
