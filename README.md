@@ -116,7 +116,7 @@ Aqui está uma lista dos principais endpoints disponíveis.
 | Verbo HTTP | URI                         | Descrição                                           | Proteção  | Status           |
 |:-----------|:----------------------------|:----------------------------------------------------|:----------|:-----------------|
 | `POST`     | `/auth/register`            | Registra um novo usuário.                           | Público   | Implementado     |
-| `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.        | Público   | Não Implementado |
+| `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.        | Público   | Implementado     |
 | `GET`      | `/events`                   | Lista todos os eventos públicos.                    | Público   | Não Implementado |
 | `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.             | Público   | Não Implementado |
 | `POST`     | `/events`                   | Cria um novo evento.                                | Protegido | Não Implementado |
