@@ -18,7 +18,7 @@ Esta API é responsável por toda a lógica de negócio e gerenciamento de dados
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 * **Java 17**
 * **Spring Boot 3**
@@ -114,7 +114,7 @@ Aqui está uma lista dos principais endpoints disponíveis.
 
 ---
 
-## 🏛️ Arquitetura do Projeto
+## Arquitetura do Projeto
 
 O projeto segue uma arquitetura em camadas, separando as responsabilidades para manter o código organizado, testável e escalável.
 
