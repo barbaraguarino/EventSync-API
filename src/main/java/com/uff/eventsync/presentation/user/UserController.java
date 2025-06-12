@@ -45,8 +45,8 @@ public class UserController {
         cookie.setMaxAge(5 * 60 * 60);
         httpServletResponse.addCookie(cookie);
 
-        var responseBody = new LoginResponseDTO("Login successful!", authResult.userName());
+        var responseBody = new LoginResponseDTO("Login successful!", authResult.email(), authResult.name());
 
-        return ResponseEntity.ok(responseBody);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseBody);
     }
 }
