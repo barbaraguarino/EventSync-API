@@ -29,6 +29,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Authentication auth = this.authenticationManager.authenticate(usernamePassword);
         var authenticatedUser = (User) auth.getPrincipal();
         String token = this.tokenService.generateToken(authenticatedUser);
-        return new AuthenticationResultDTO(token, authenticatedUser.getName());
+        return new AuthenticationResultDTO(token, authenticatedUser.getEmail(), authenticatedUser.getName());
     }
 }
