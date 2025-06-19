@@ -5,7 +5,5 @@ import java.util.UUID;
 
 public record EventResponseDTO(
         UUID id,
-        String name,
-        LocalDate date,
-        String categoryName
+        String name
 ) {}
