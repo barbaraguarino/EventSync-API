@@ -111,7 +111,7 @@ Aqui está uma lista dos principais endpoints disponíveis.
 | `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.       | Público   | Implementado     |
 | `GET`      | `/categories`               | Lista todas as categorias.                         | Público   | Implementado     |
 | `GET`      | `/events`                   | Lista todos os eventos públicos.                   | Público   | Não Implementado |
-| `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.            | Público   | Não Implementado |
+| `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.            | Público   | Implementado     |
 | `POST`     | `/events`                   | Cria um novo evento.                               | Protegido | Implementado     |
 | `PUT`      | `/events/{id}`              | Atualiza um evento existente.                      | Protegido | Não Implementado |
 | `DELETE`   | `/events/{id}`              | Deleta um evento.                                  | Protegido | Não Implementado |
