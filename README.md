@@ -71,14 +71,6 @@ Antes de começar, garanta que você tenha instalado em sua máquina:
     spring.datasource.username=seu_usuario_postgres
     spring.datasource.password=sua_senha_postgres
 
-    # =======================================
-    # CONFIGURAÇÃO DA AWS (PARA O S3)
-    # =======================================
-    aws.region=us-east-1 # ou a sua região de preferência
-    aws.s3.bucket-name=nome-do-seu-bucket-s3
-    aws.access-key-id=sua-access-key-id-da-aws
-    aws.secret-access-key=sua-secret-access-key-da-aws
-
     ```
 
 4.  **Execute a Aplicação:**
@@ -120,7 +112,7 @@ Aqui está uma lista dos principais endpoints disponíveis.
 | `GET`      | `/categories`               | Lista todas as categorias.                         | Público   | Implementado     |
 | `GET`      | `/events`                   | Lista todos os eventos públicos.                   | Público   | Não Implementado |
 | `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.            | Público   | Não Implementado |
-| `POST`     | `/events`                   | Cria um novo evento.                               | Protegido | Não Implementado |
+| `POST`     | `/events`                   | Cria um novo evento.                               | Protegido | Implementado     |
 | `PUT`      | `/events/{id}`              | Atualiza um evento existente.                      | Protegido | Não Implementado |
 | `DELETE`   | `/events/{id}`              | Deleta um evento.                                  | Protegido | Não Implementado |
 | `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                       | Protegido | Não Implementado |
