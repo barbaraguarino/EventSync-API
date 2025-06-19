@@ -1,19 +1,18 @@
 package com.uff.eventsync.presentation.event;
 
 import com.uff.eventsync.application.event.dto.EventCreateRequestDTO;
+import com.uff.eventsync.application.event.dto.EventDetailResponseDTO;
 import com.uff.eventsync.application.event.dto.EventResponseDTO;
 import com.uff.eventsync.application.event.service.EventService;
 import com.uff.eventsync.domain.user.entity.User;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/events")
@@ -41,5 +40,11 @@ public class EventController {
                 .toUri();
 
         return ResponseEntity.created(location).body(createdEvent);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EventDetailResponseDTO> getEventById(@PathVariable UUID id) {
+        EventDetailResponseDTO event = eventService.findEventById(id);
+        return ResponseEntity.ok(event);
     }
 }
