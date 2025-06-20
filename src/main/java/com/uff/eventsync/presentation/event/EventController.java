@@ -14,6 +14,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.UUID;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -45,6 +48,9 @@ public class EventController {
     @GetMapping("/{id}")
     public ResponseEntity<EventDetailResponseDTO> getEventById(@PathVariable UUID id) {
         EventDetailResponseDTO event = eventService.findEventById(id);
+
+        event.add(linkTo(methodOn(EventController.class).getEventById(id)).withSelfRel());
+
         return ResponseEntity.ok(event);
     }
 }
