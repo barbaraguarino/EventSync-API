@@ -95,7 +95,6 @@ O projeto segue uma arquitetura em camadas, separando as responsabilidades para 
 * `domain`: Contém as entidades de negócio (`User`, `Event`) e as interfaces dos repositórios. É o coração da aplicação.
 * `application`: Contém a lógica de negócio (casos de uso). Orquestra o fluxo de dados entre a apresentação e o domínio, utilizando DTOs e Mappers.
 * `presentation`: Responsável pela exposição da API (Controladores REST). Lida com as requisições HTTP e respostas, delegando o trabalho para a camada de `application`.
-* `infrastructure`: Implementações de tecnologias externas, como a integração com serviços da AWS (S3) e a implementação da persistência de dados.
 * `config`: Configurações globais da aplicação, como segurança (Spring Security) e beans de integração.
 * `shared`: Componentes reutilizáveis, como manipuladores de exceções globais (`GlobalExceptionHandler`), que servem a toda a aplicação.
 
@@ -110,7 +109,7 @@ Aqui está uma lista dos principais endpoints disponíveis.
 | `POST`     | `/auth/register`            | Registra um novo usuário.                          | Público   | Implementado     |
 | `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.       | Público   | Implementado     |
 | `GET`      | `/categories`               | Lista todas as categorias.                         | Público   | Implementado     |
-| `GET`      | `/events`                   | Lista todos os eventos públicos.                   | Público   | Não Implementado |
+| `GET`      | `/events`                   | Lista todos os eventos públicos.                   | Público   | Implementado     |
 | `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.            | Público   | Implementado     |
 | `POST`     | `/events`                   | Cria um novo evento.                               | Protegido | Implementado     |
 | `PUT`      | `/events/{id}`              | Atualiza um evento existente.                      | Protegido | Não Implementado |

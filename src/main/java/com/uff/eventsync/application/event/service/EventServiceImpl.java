@@ -12,6 +12,7 @@ import com.uff.eventsync.domain.user.entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -43,5 +44,10 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id));
 
         return EventMapper.toDetailResponseDTO(event);
+    }
+
+    @Override
+    public List<Event> findAllEventsSorted() {
+        return eventRepository.findAllByOrderByDateAscStartTimeAsc();
     }
 }

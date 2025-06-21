@@ -4,6 +4,7 @@ import com.uff.eventsync.application.categories.dto.CategoryResponseDTO;
 import com.uff.eventsync.application.event.dto.EventCreateRequestDTO;
 import com.uff.eventsync.application.event.dto.EventDetailResponseDTO;
 import com.uff.eventsync.application.event.dto.EventResponseDTO;
+import com.uff.eventsync.application.event.dto.EventSummaryResponseDTO;
 import com.uff.eventsync.application.user.dto.UserSummaryDTO;
 import com.uff.eventsync.domain.categories.entity.Category;
 import com.uff.eventsync.domain.event.entity.Event;
@@ -62,6 +63,17 @@ public class EventMapper {
                 event.getOnlineUrl(),
                 categoryDTO,
                 organizerDTO
+        );
+    }
+
+    public static EventSummaryResponseDTO toSummaryResponseDTO(Event event) {
+        return new EventSummaryResponseDTO(
+                event.getId(),
+                event.getName(),
+                event.getDate(),
+                event.getStartTime(),
+                event.getLocation(),
+                event.getCategory().getName()
         );
     }
 }
