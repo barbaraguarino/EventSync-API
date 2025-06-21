@@ -13,4 +13,5 @@ public interface EventService {
     EventResponseDTO createEvent(EventCreateRequestDTO eventData, User organizer);
     EventDetailResponseDTO findEventById(UUID id);
     List<Event> findAllEventsSorted();
+    void deleteEvent(UUID eventId, User currentUser);
 }
