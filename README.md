@@ -113,5 +113,5 @@ Aqui está uma lista dos principais endpoints disponíveis.
 | `POST`     | `/events`                   | Cria um novo evento.                               | Protegido | Implementado     |
 | `PUT`      | `/events/{id}`              | Atualiza um evento existente.                      | Protegido | Implementado     |
 | `DELETE`   | `/events/{id}`              | Deleta um evento.                                  | Protegido | Implementado     |
-| `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                       | Protegido | Não Implementado |
+| `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                       | Protegido | Implementado     |
 | `GET`      | `/me/events`                | Lista os eventos em que o usuário marcou presença. | Protegido | Não Implementado |
