@@ -14,4 +14,5 @@ public interface EventService {
     List<Event> findAllEventsSorted();
     void deleteEvent(UUID eventId, User currentUser);
     Event updateEvent(UUID eventId, EventUpdateRequestDTO eventData, User currentUser);
+
 }

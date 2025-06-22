@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,5 +37,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         event.getAttendees().add(currentUser);
         eventRepository.save(event);
+    }
+
+    @Override
+    public List<Event> findAttendedEventsForUser(User currentUser) {
+        return eventRepository.findByAttendeesContainsOrderByDateAscStartTimeAsc(currentUser);
     }
 }
