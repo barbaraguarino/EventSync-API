@@ -9,7 +9,9 @@ import com.uff.eventsync.application.user.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,16 +39,15 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginData, HttpServletResponse httpServletResponse) {
         AuthenticationResultDTO authResult = authenticationService.login(loginData);
-
-        Cookie cookie = new Cookie("accessToken", authResult.token());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(5 * 60 * 60);
-        httpServletResponse.addCookie(cookie);
-
+        ResponseCookie cookie = ResponseCookie.from("accessToken", authResult.token())
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(5 * 60 * 60)
+                .sameSite("None")
+                .build();
+        httpServletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         var responseBody = new LoginResponseDTO("Login successful!", authResult.email(), authResult.name());
-
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseBody);
     }
 }
