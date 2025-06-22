@@ -34,7 +34,9 @@ public class EventMapper {
     public static EventResponseDTO toResponseDTO(Event event) {
         return new EventResponseDTO(
                 event.getId(),
-                event.getName()
+                event.getName(),
+                event.getDate(),
+                event.getCategory().getName()
         );
     }
 
