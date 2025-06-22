@@ -1,5 +1,7 @@
 package com.uff.eventsync.shared.handler;
 
+import com.uff.eventsync.application.registration.exception.BusinessRuleException;
+import com.uff.eventsync.application.registration.exception.UserAlreadyCheckedInException;
 import com.uff.eventsync.shared.dto.ErrorResponse;
 import com.uff.eventsync.shared.exception.UnauthorizedActionException;
 import com.uff.eventsync.shared.exception.UserAlreadyExistsException;
@@ -53,6 +55,18 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(BusinessRuleException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessRuleException(BusinessRuleException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value(), LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyCheckedInException.class)
+    public ResponseEntity<ErrorResponse> handleUserAlreadyCheckedIn(UserAlreadyCheckedInException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.CONFLICT.value(), LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
 }
