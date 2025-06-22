@@ -103,15 +103,15 @@ O projeto segue uma arquitetura em camadas, separando as responsabilidades para 
 
 Aqui está uma lista dos principais endpoints disponíveis.
 
-| Verbo HTTP | URI                         | Descrição                                          | Proteção  | Status           |
-|:-----------|:----------------------------|:---------------------------------------------------|:----------|:-----------------|
-| `POST`     | `/auth/register`            | Registra um novo usuário.                          | Público   | Implementado     |
-| `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.       | Público   | Implementado     |
-| `GET`      | `/categories`               | Lista todas as categorias.                         | Público   | Implementado     |
-| `GET`      | `/events`                   | Lista todos os eventos públicos.                   | Público   | Implementado     |
-| `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.            | Público   | Implementado     |
-| `POST`     | `/events`                   | Cria um novo evento.                               | Protegido | Implementado     |
-| `PUT`      | `/events/{id}`              | Atualiza um evento existente.                      | Protegido | Implementado     |
-| `DELETE`   | `/events/{id}`              | Deleta um evento.                                  | Protegido | Implementado     |
-| `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                       | Protegido | Implementado     |
-| `GET`      | `/me/events`                | Lista os eventos em que o usuário marcou presença. | Protegido | Não Implementado |
+| Verbo HTTP | URI                         | Descrição                                          | Proteção  | Status       |
+|:-----------|:----------------------------|:---------------------------------------------------|:----------|:-------------|
+| `POST`     | `/auth/register`            | Registra um novo usuário.                          | Público   | Implementado |
+| `POST`     | `/auth/login`               | Autentica um usuário e retorna um token JWT.       | Público   | Implementado |
+| `GET`      | `/categories`               | Lista todas as categorias.                         | Público   | Implementado |
+| `GET`      | `/events`                   | Lista todos os eventos públicos.                   | Público   | Implementado |
+| `GET`      | `/events/{id}`              | Busca um evento específico pelo seu ID.            | Público   | Implementado |
+| `POST`     | `/events`                   | Cria um novo evento.                               | Protegido | Implementado |
+| `PUT`      | `/events/{id}`              | Atualiza um evento existente.                      | Protegido | Implementado |
+| `DELETE`   | `/events/{id}`              | Deleta um evento.                                  | Protegido | Implementado |
+| `POST`     | `/events/{eventId}/checkin` | Marca presença em um evento.                       | Protegido | Implementado |
+| `GET`      | `/me/events`                | Lista os eventos em que o usuário marcou presença. | Protegido | Implementado |
