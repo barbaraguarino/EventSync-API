@@ -1,7 +1,7 @@
 package com.uff.eventsync.application.event.service;
 
 import com.uff.eventsync.application.event.dto.EventCreateRequestDTO;
-import com.uff.eventsync.application.event.dto.EventDetailResponseDTO;
+import com.uff.eventsync.application.event.dto.EventUpdateRequestDTO;
 import com.uff.eventsync.application.event.mapper.EventMapper;
 import com.uff.eventsync.domain.categories.entity.Category;
 import com.uff.eventsync.domain.categories.repository.CategoryRepository;
@@ -35,11 +35,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDetailResponseDTO findEventById(UUID id) {
-        Event event = eventRepository.findById(id)
+    public Event findEventById(UUID id) {
+        return eventRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id));
-
-        return EventMapper.toDetailResponseDTO(event);
     }
 
     @Override
@@ -55,5 +53,18 @@ public class EventServiceImpl implements EventService {
             throw new UnauthorizedActionException("User is not authorized to delete this event.");
         }
         eventRepository.delete(event);
+    }
+
+    @Override
+    public Event updateEvent(UUID eventId, EventUpdateRequestDTO eventData, User currentUser) {
+        Event existingEvent = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
+        if (!existingEvent.getOrganizer().getId().equals(currentUser.getId())) {
+            throw new UnauthorizedActionException("User is not authorized to update this event.");
+        }
+        Category category = categoryRepository.findById(eventData.categoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + eventData.categoryId()));
+        EventMapper.updateEntityFromDTO(existingEvent, eventData, category);
+        return eventRepository.save(existingEvent);
     }
 }

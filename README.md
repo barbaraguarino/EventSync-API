@@ -14,7 +14,6 @@ Esta API é responsável por toda a lógica de negócio e gerenciamento de dados
     * Usuários autenticados podem **criar** novos eventos.
     * Usuários podem **editar e excluir** apenas os eventos que eles mesmos criaram.
 * **Participação em Eventos:** Usuários autenticados podem **marcar presença** em qualquer evento.
-* **Upload de Imagens:** Funcionalidade para fazer upload de imagens de capa para os eventos, utilizando **AWS S3**.
 
 ---
 
