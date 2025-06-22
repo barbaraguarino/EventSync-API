@@ -6,7 +6,6 @@ import com.uff.eventsync.application.user.dto.LoginResponseDTO;
 import com.uff.eventsync.application.user.dto.UserCreateRequestDTO;
 import com.uff.eventsync.application.user.service.AuthenticationService;
 import com.uff.eventsync.application.user.service.UserService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -37,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginData, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginData) { // Removido o HttpServletResponse
         AuthenticationResultDTO authResult = authenticationService.login(loginData);
         ResponseCookie cookie = ResponseCookie.from("accessToken", authResult.token())
                 .httpOnly(true)
@@ -46,8 +45,9 @@ public class UserController {
                 .maxAge(5 * 60 * 60)
                 .sameSite("None")
                 .build();
-        httpServletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         var responseBody = new LoginResponseDTO("Login successful!", authResult.email(), authResult.name());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseBody);
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(responseBody);
     }
 }
