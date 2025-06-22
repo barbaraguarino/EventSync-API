@@ -1,10 +1,7 @@
 package com.uff.eventsync.application.event.mapper;
 
 import com.uff.eventsync.application.categories.dto.CategoryResponseDTO;
-import com.uff.eventsync.application.event.dto.EventCreateRequestDTO;
-import com.uff.eventsync.application.event.dto.EventDetailResponseDTO;
-import com.uff.eventsync.application.event.dto.EventResponseDTO;
-import com.uff.eventsync.application.event.dto.EventSummaryResponseDTO;
+import com.uff.eventsync.application.event.dto.*;
 import com.uff.eventsync.application.user.dto.UserSummaryDTO;
 import com.uff.eventsync.domain.categories.entity.Category;
 import com.uff.eventsync.domain.event.entity.Event;
@@ -78,4 +75,20 @@ public class EventMapper {
                 event.getCategory().getName()
         );
     }
+
+    public static void updateEntityFromDTO(Event eventToUpdate, EventUpdateRequestDTO dto, Category category) {
+        eventToUpdate.setName(dto.name());
+        eventToUpdate.setDescription(dto.description());
+        eventToUpdate.setLocation(dto.location());
+        eventToUpdate.setDate(dto.date());
+        eventToUpdate.setStartTime(dto.startTime());
+        eventToUpdate.setEndTime(dto.endTime());
+        eventToUpdate.setEventType(dto.eventType());
+        eventToUpdate.setTicketUrl(dto.ticketUrl());
+        eventToUpdate.setOfficialSiteUrl(dto.officialSiteUrl());
+        eventToUpdate.setOnlineUrl(dto.onlineUrl());
+        eventToUpdate.setCategory(category);
+    }
+
+
 }

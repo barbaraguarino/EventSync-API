@@ -1,9 +1,6 @@
 package com.uff.eventsync.presentation.event;
 
-import com.uff.eventsync.application.event.dto.EventCreateRequestDTO;
-import com.uff.eventsync.application.event.dto.EventDetailResponseDTO;
-import com.uff.eventsync.application.event.dto.EventResponseDTO;
-import com.uff.eventsync.application.event.dto.EventSummaryResponseDTO;
+import com.uff.eventsync.application.event.dto.*;
 import com.uff.eventsync.application.event.mapper.EventMapper;
 import com.uff.eventsync.application.event.service.EventService;
 import com.uff.eventsync.domain.event.entity.Event;
@@ -12,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,13 +35,10 @@ public class EventController {
     public ResponseEntity<EventDetailResponseDTO> createEvent(
             @Valid @RequestBody EventCreateRequestDTO eventData,
             Authentication authentication) {
-
         User organizer = (User) authentication.getPrincipal();
         Event createdEvent = eventService.createEvent(eventData, organizer);
         EventDetailResponseDTO responseDTO = EventMapper.toDetailResponseDTO(createdEvent);
-        responseDTO.add(linkTo(methodOn(EventController.class).getEventById(responseDTO.getId())).withSelfRel());
-        responseDTO.add(linkTo(methodOn(EventController.class).deleteEvent(responseDTO.getId(), null)).withRel("delete"));
-        responseDTO.add(linkTo(methodOn(EventController.class).getAllEvents()).withRel("all-events"));
+        addLinksToEvent(responseDTO, organizer);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -53,12 +48,13 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EventDetailResponseDTO> getEventById(@PathVariable UUID id) {
-        EventDetailResponseDTO event = eventService.findEventById(id);
-        event.add(linkTo(methodOn(EventController.class).getEventById(id)).withSelfRel());
-        event.add(linkTo(methodOn(EventController.class).deleteEvent(id, null)).withRel("delete"));
-        event.add(linkTo(methodOn(EventController.class).getAllEvents()).withRel("all-events"));
-        return ResponseEntity.ok(event);
+    public ResponseEntity<EventDetailResponseDTO> getEventById(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal User currentUser) {
+        Event eventEntity = eventService.findEventById(id);
+        EventDetailResponseDTO responseDTO = EventMapper.toDetailResponseDTO(eventEntity);
+        addLinksToEvent(responseDTO, currentUser);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping
@@ -66,13 +62,26 @@ public class EventController {
         List<Event> events = eventService.findAllEventsSorted();
         List<EventSummaryResponseDTO> eventDTOs = events.stream().map(event -> {
             EventSummaryResponseDTO dto = EventMapper.toSummaryResponseDTO(event);
-            dto.add(linkTo(methodOn(EventController.class).getEventById(event.getId())).withSelfRel());
+            dto.add(linkTo(methodOn(EventController.class).getEventById(event.getId(), null)).withSelfRel());
             return dto;
         }).collect(Collectors.toList());
         var selfLink = linkTo(methodOn(EventController.class).getAllEvents()).withSelfRel();
         CollectionModel<EventSummaryResponseDTO> collectionModel = CollectionModel.of(eventDTOs, selfLink);
-        collectionModel.add(linkTo(methodOn(EventController.class).createEvent(null, null)).withRel("create-event"));
+        collectionModel.add(linkTo(EventController.class).withRel("create-event"));
         return ResponseEntity.ok(collectionModel);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EventDetailResponseDTO> updateEvent(
+            @PathVariable UUID id,
+            @Valid @RequestBody EventUpdateRequestDTO eventData,
+            Authentication authentication) {
+        User currentUser = (User) authentication.getPrincipal();
+        Event updatedEvent = eventService.updateEvent(id, eventData, currentUser);
+        EventDetailResponseDTO responseDTO = EventMapper.toDetailResponseDTO(updatedEvent);
+        addLinksToEvent(responseDTO, currentUser);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -82,4 +91,13 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
+    private void addLinksToEvent(EventDetailResponseDTO eventDTO, User currentUser) {
+        UUID eventId = eventDTO.getId();
+        eventDTO.add(linkTo(EventController.class).slash(eventId).withSelfRel());
+        eventDTO.add(linkTo(EventController.class).withRel("all-events"));
+        if (currentUser != null && currentUser.getId().equals(eventDTO.getOrganizer().id())) {
+            eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("update"));
+            eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("delete"));
+        }
+    }
 }
