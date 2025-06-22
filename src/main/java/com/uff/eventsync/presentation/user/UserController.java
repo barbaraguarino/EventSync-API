@@ -6,7 +6,6 @@ import com.uff.eventsync.application.user.dto.LoginResponseDTO;
 import com.uff.eventsync.application.user.dto.UserCreateRequestDTO;
 import com.uff.eventsync.application.user.service.AuthenticationService;
 import com.uff.eventsync.application.user.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
