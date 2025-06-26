@@ -43,4 +43,19 @@ public class RegistrationServiceImpl implements RegistrationService {
     public List<Event> findAttendedEventsForUser(User currentUser) {
         return eventRepository.findByAttendeesContainsOrderByDateAscStartTimeAsc(currentUser);
     }
+
+    @Override
+    public void deleteCheckInToEvent(UUID eventId, User currentUser) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
+        LocalDateTime eventStartDateTime = event.getDate().atTime(event.getStartTime());
+        if (eventStartDateTime.isBefore(LocalDateTime.now())) {
+            throw new BusinessRuleException("Cannot unregister from an event that has already occurred.");
+        }
+        if (!event.getAttendees().contains(currentUser)) {
+            throw new BusinessRuleException("User is not checked in to this event.");
+        }
+        event.getAttendees().remove(currentUser);
+        eventRepository.save(event);
+    }
 }

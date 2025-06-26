@@ -109,8 +109,12 @@ public class EventController {
                 boolean isAlreadyCheckedIn = eventEntity.getAttendees().contains(currentUser);
                 LocalDateTime eventStartDateTime = eventEntity.getDate().atTime(eventEntity.getStartTime());
                 boolean hasOccurred = eventStartDateTime.isBefore(LocalDateTime.now());
-                if (!isAlreadyCheckedIn && !hasOccurred) {
-                    eventDTO.add(linkTo(RegistrationController.class, eventId).withRel("check-in"));
+                if (!hasOccurred) {
+                    if (isAlreadyCheckedIn) {
+                        eventDTO.add(linkTo(methodOn(RegistrationController.class).deleteCheckIn(eventId, null)).withRel("uncheck-in"));
+                    } else {
+                        eventDTO.add(linkTo(methodOn(RegistrationController.class).checkIn(eventId, null)).withRel("check-in"));
+                    }
                 }
             }
         }

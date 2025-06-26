@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface RegistrationService {
     void checkInToEvent(UUID eventId, User currentUser);
     List<Event> findAttendedEventsForUser(User currentUser);
+    void deleteCheckInToEvent(UUID eventId, User currentUser);
 }
