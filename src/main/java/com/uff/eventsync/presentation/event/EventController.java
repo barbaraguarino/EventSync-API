@@ -5,6 +5,7 @@ import com.uff.eventsync.application.event.mapper.EventMapper;
 import com.uff.eventsync.application.event.service.EventService;
 import com.uff.eventsync.domain.event.entity.Event;
 import com.uff.eventsync.domain.user.entity.User;
+import com.uff.eventsync.presentation.registration.RegistrationController;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,7 +40,7 @@ public class EventController {
         User organizer = (User) authentication.getPrincipal();
         Event createdEvent = eventService.createEvent(eventData, organizer);
         EventDetailResponseDTO responseDTO = EventMapper.toDetailResponseDTO(createdEvent);
-        addLinksToEvent(responseDTO, organizer);
+        addLinksToEvent(responseDTO, organizer, createdEvent);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -53,7 +55,11 @@ public class EventController {
             @AuthenticationPrincipal User currentUser) {
         Event eventEntity = eventService.findEventById(id);
         EventDetailResponseDTO responseDTO = EventMapper.toDetailResponseDTO(eventEntity);
-        addLinksToEvent(responseDTO, currentUser);
+        if (currentUser != null) {
+            boolean isCheckedIn = eventEntity.getAttendees().contains(currentUser);
+            responseDTO.setUserIsCheckedIn(isCheckedIn);
+        }
+        addLinksToEvent(responseDTO, currentUser, eventEntity);
         return ResponseEntity.ok(responseDTO);
     }
 
@@ -79,7 +85,7 @@ public class EventController {
         User currentUser = (User) authentication.getPrincipal();
         Event updatedEvent = eventService.updateEvent(id, eventData, currentUser);
         EventDetailResponseDTO responseDTO = EventMapper.toDetailResponseDTO(updatedEvent);
-        addLinksToEvent(responseDTO, currentUser);
+        addLinksToEvent(responseDTO, currentUser, updatedEvent);
 
         return ResponseEntity.ok(responseDTO);
     }
@@ -91,13 +97,22 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    private void addLinksToEvent(EventDetailResponseDTO eventDTO, User currentUser) {
+    private void addLinksToEvent(EventDetailResponseDTO eventDTO, User currentUser, Event eventEntity) {
         UUID eventId = eventDTO.getId();
         eventDTO.add(linkTo(EventController.class).slash(eventId).withSelfRel());
         eventDTO.add(linkTo(EventController.class).withRel("all-events"));
-        if (currentUser != null && currentUser.getId().equals(eventDTO.getOrganizer().id())) {
-            eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("update"));
-            eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("delete"));
+        if (currentUser != null) {
+            if (currentUser.getId().equals(eventDTO.getOrganizer().id())) {
+                eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("update"));
+                eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("delete"));
+            } else {
+                boolean isAlreadyCheckedIn = eventEntity.getAttendees().contains(currentUser);
+                LocalDateTime eventStartDateTime = eventEntity.getDate().atTime(eventEntity.getStartTime());
+                boolean hasOccurred = eventStartDateTime.isBefore(LocalDateTime.now());
+                if (!isAlreadyCheckedIn && !hasOccurred) {
+                    eventDTO.add(linkTo(RegistrationController.class, eventId).withRel("check-in"));
+                }
+            }
         }
     }
 }
