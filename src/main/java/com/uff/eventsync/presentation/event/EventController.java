@@ -102,7 +102,7 @@ public class EventController {
         eventDTO.add(linkTo(EventController.class).slash(eventId).withSelfRel());
         eventDTO.add(linkTo(EventController.class).withRel("all-events"));
         if (currentUser != null) {
-            if (currentUser.getEmail().equals(eventDTO.getOrganizer().email())) {
+            if (currentUser.getId().equals(eventDTO.getOrganizer().id())) {
                 eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("update"));
                 eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("delete"));
             } else {
@@ -111,9 +111,9 @@ public class EventController {
                 boolean hasOccurred = eventStartDateTime.isBefore(LocalDateTime.now());
                 if (!hasOccurred) {
                     if (isAlreadyCheckedIn) {
-                        eventDTO.add(linkTo(methodOn(RegistrationController.class).deleteCheckIn(eventId, null)).withRel("uncheck-in"));
+                        eventDTO.add(linkTo(RegistrationController.class, eventId).withRel("uncheck-in"));
                     } else {
-                        eventDTO.add(linkTo(methodOn(RegistrationController.class).checkIn(eventId, null)).withRel("check-in"));
+                        eventDTO.add(linkTo(RegistrationController.class, eventId).withRel("check-in"));
                     }
                 }
             }
