@@ -44,7 +44,7 @@ public class EventMapper {
         );
 
         UserSummaryDTO organizerDTO = new UserSummaryDTO(
-                event.getOrganizer().getId(),
+                event.getOrganizer().getEmail(),
                 event.getOrganizer().getName()
         );
 

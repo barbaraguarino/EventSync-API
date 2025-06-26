@@ -102,7 +102,7 @@ public class EventController {
         eventDTO.add(linkTo(EventController.class).slash(eventId).withSelfRel());
         eventDTO.add(linkTo(EventController.class).withRel("all-events"));
         if (currentUser != null) {
-            if (currentUser.getId().equals(eventDTO.getOrganizer().id())) {
+            if (currentUser.getEmail().equals(eventDTO.getOrganizer().email())) {
                 eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("update"));
                 eventDTO.add(linkTo(EventController.class).slash(eventId).withRel("delete"));
             } else {
