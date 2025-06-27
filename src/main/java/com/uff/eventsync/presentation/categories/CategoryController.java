@@ -1,8 +1,9 @@
 package com.uff.eventsync.presentation.categories;
 
 import com.uff.eventsync.application.categories.dto.CategoryResponseDTO;
+import com.uff.eventsync.application.categories.mapper.CategoryMapper;
 import com.uff.eventsync.application.categories.service.CategoryService;
-import org.springframework.http.HttpStatus;
+import com.uff.eventsync.domain.categories.entity.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,8 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {
-        List<CategoryResponseDTO> categories = categoryService.findAllSortedByName();
-        return ResponseEntity.status(HttpStatus.OK).body(categories);
+        List<Category> categories = categoryService.findAllSortedByName();
+        List<CategoryResponseDTO> responseDTOs = CategoryMapper.toDTOList(categories);
+        return ResponseEntity.ok(responseDTOs);
     }
 }

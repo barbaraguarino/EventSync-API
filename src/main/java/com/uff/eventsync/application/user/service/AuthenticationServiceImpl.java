@@ -1,6 +1,5 @@
 package com.uff.eventsync.application.user.service;
 
-import com.uff.eventsync.application.user.dto.AuthenticationResultDTO;
 import com.uff.eventsync.application.user.dto.LoginRequestDTO;
 import com.uff.eventsync.config.security.TokenService;
 import com.uff.eventsync.domain.user.entity.User;
@@ -21,14 +20,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResultDTO login(LoginRequestDTO loginRequest) {
+    public String login(LoginRequestDTO loginRequest) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(
                 loginRequest.email(),
                 loginRequest.password()
         );
         Authentication auth = this.authenticationManager.authenticate(usernamePassword);
         var authenticatedUser = (User) auth.getPrincipal();
-        String token = this.tokenService.generateToken(authenticatedUser);
-        return new AuthenticationResultDTO(token, authenticatedUser.getEmail(), authenticatedUser.getName());
+        return this.tokenService.generateToken(authenticatedUser);
     }
 }

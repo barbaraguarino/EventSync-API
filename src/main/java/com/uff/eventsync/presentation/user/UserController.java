@@ -1,16 +1,17 @@
 package com.uff.eventsync.presentation.user;
 
-import com.uff.eventsync.application.user.dto.AuthenticationResultDTO;
 import com.uff.eventsync.application.user.dto.LoginRequestDTO;
 import com.uff.eventsync.application.user.dto.LoginResponseDTO;
 import com.uff.eventsync.application.user.dto.UserCreateRequestDTO;
 import com.uff.eventsync.application.user.service.AuthenticationService;
 import com.uff.eventsync.application.user.service.UserService;
+import com.uff.eventsync.domain.user.entity.User;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,17 +36,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginData) { // Removido o HttpServletResponse
-        AuthenticationResultDTO authResult = authenticationService.login(loginData);
-        ResponseCookie cookie = ResponseCookie.from("accessToken", authResult.token())
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginData) {
+        String token = authenticationService.login(loginData);
+        User authenticatedUser = (User) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
                 .maxAge(5 * 60 * 60)
                 .sameSite("None")
                 .build();
-        var responseBody = new LoginResponseDTO("Login successful!", authResult.email(), authResult.name());
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
+        var responseBody = new LoginResponseDTO("Login successful!", authenticatedUser.getEmail(), authenticatedUser.getName());
+        return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(responseBody);
     }

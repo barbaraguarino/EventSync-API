@@ -1,7 +1,5 @@
 package com.uff.eventsync.application.categories.service;
 
-import com.uff.eventsync.application.categories.dto.CategoryResponseDTO;
-import com.uff.eventsync.application.categories.mapper.CategoryMapper;
 import com.uff.eventsync.domain.categories.entity.Category;
 import com.uff.eventsync.domain.categories.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -18,9 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryResponseDTO> findAllSortedByName() {
-        List<Category> categories = categoryRepository.findAllByOrderByNameAsc();
-
-        return CategoryMapper.toDTOList(categories);
+    public List<Category> findAllSortedByName() {
+        return categoryRepository.findAllByOrderByNameAsc();
     }
 }
